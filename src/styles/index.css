@@ -1,0 +1,200 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   Smart Canteen design tokens
+   One source of truth for colour, type, radius, shadow and motion.
+   ========================================================================== */
+@theme {
+  /* Colour — warm ivory canvas, charcoal ink, forest-green accent */
+  --color-canvas: #faf9f6;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f3f2ec;
+  --color-surface-sunken: #eceae2;
+  --color-ink: #20251f;
+  --color-ink-muted: #5f655c; /* 5.6:1 on canvas */
+  --color-ink-subtle: #868b82; /* decorative / large text only */
+  --color-line: #e8e8e1;
+  --color-line-strong: #d6d6cc;
+
+  --color-brand: #236b45;
+  --color-brand-hover: #195638;
+  --color-brand-pressed: #134429;
+  --color-brand-soft: #e6f0e9;
+  --color-brand-softer: #f1f6f2;
+  --color-brand-ink: #1a4f33;
+
+  --color-warning: #9a6416; /* text-safe variant of #B7791F */
+  --color-warning-strong: #b7791f;
+  --color-warning-soft: #fbf1df;
+  --color-danger: #b03426;
+  --color-danger-soft: #fbeae7;
+  --color-info: #2f5b86;
+  --color-info-soft: #e9f0f7;
+
+  --color-veg: #1f8a3b;
+  --color-nonveg: #a5321f;
+
+  /* Type */
+  --font-sans: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Instrument Serif', ui-serif, Georgia, serif;
+
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1rem;
+
+  /* Radius scale */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+
+  /* Shadow scale — soft, warm, low-contrast */
+  --shadow-xs: 0 1px 2px rgb(32 37 31 / 0.05);
+  --shadow-sm: 0 1px 2px rgb(32 37 31 / 0.04), 0 2px 6px rgb(32 37 31 / 0.05);
+  --shadow-md: 0 2px 4px rgb(32 37 31 / 0.04), 0 8px 24px rgb(32 37 31 / 0.08);
+  --shadow-lg: 0 4px 8px rgb(32 37 31 / 0.04), 0 18px 48px rgb(32 37 31 / 0.12);
+  --shadow-focus: 0 0 0 3px rgb(35 107 69 / 0.28);
+
+  /* Motion */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-fade-in: fade-in 180ms var(--ease-out-soft);
+  --animate-scale-in: scale-in 200ms var(--ease-out-soft);
+  --animate-slide-in-right: slide-in-right 260ms var(--ease-out-soft);
+  --animate-slide-up: slide-up 240ms var(--ease-out-soft);
+  --animate-shimmer: shimmer 1.6s ease-in-out infinite;
+
+  /* Layout */
+  --container-page: 76rem; /* 1216px max content width */
+  --spacing-header: 4rem;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes scale-in {
+    /* Tailwind's translate-* utilities use the `translate` property, so only scale here. */
+    from { opacity: 0; transform: scale(0.97); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes slide-in-right {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes shimmer {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-padding-top: calc(var(--spacing-header) + 1rem);
+  }
+
+  body {
+    @apply bg-canvas font-sans text-[15px] leading-6 text-ink;
+    font-feature-settings: 'ss01', 'cv11';
+    min-height: 100dvh;
+  }
+
+  ::selection {
+    background: var(--color-brand-soft);
+    color: var(--color-brand-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  h1, h2, h3, h4 {
+    @apply text-ink;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  input, textarea, select, button {
+    font: inherit;
+  }
+
+  /* Use tabular figures wherever numbers line up */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  .page-container {
+    @apply mx-auto w-full max-w-(--container-page) px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Display type: used sparingly for hero and page titles */
+  .text-display {
+    @apply font-display font-normal tracking-[-0.01em] text-ink;
+  }
+
+  .eyebrow {
+    @apply text-xs font-medium tracking-[0.08em] text-ink-muted uppercase;
+  }
+
+  .skeleton {
+    background: linear-gradient(90deg, var(--color-surface-muted) 25%, var(--color-surface-sunken) 37%, var(--color-surface-muted) 63%);
+    background-size: 400% 100%;
+    animation: var(--animate-shimmer);
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Print: receipts print cleanly on A4 / thermal-width paper
+   -------------------------------------------------------------------------- */
+@media print {
+  @page {
+    margin: 12mm;
+  }
+  body {
+    background: #fff !important;
+    font-size: 12px;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .print-plain {
+    box-shadow: none !important;
+    border-color: #ccc !important;
+    background: #fff !important;
+  }
+}
+.print-only {
+  display: none;
+}
