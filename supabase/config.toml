@@ -9,8 +9,13 @@ enabled = true
 sql_paths = ["./seed.sql"]
 
 [auth]
-site_url = "http://localhost:5173"
-additional_redirect_urls = ["http://localhost:5173/reset-password", "http://localhost:5173/sign-in"]
+site_url = "https://smart-canteen-blond.vercel.app"
+additional_redirect_urls = [
+  "https://smart-canteen-blond.vercel.app/sign-in",
+  "https://smart-canteen-blond.vercel.app/reset-password",
+  "http://localhost:5173/sign-in",
+  "http://localhost:5173/reset-password",
+]
 
 [auth.email]
 enable_signup = true
